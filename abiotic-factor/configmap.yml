@@ -1,0 +1,18 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: abiotic-factor-game-configs
+  namespace: abiotic-factor
+data:
+  servername: ${SERVER_NAME}
+  player_count: "${COUNT}"
+
+  Admin.ini: |
+    [Moderators]
+    Moderator=${STEAMID}
+    Moderator=ExampleID2
+
+    [BannedPlayers]
+    BannedPlayer=ExampleBanID1
+    BannedPlayer=ExampleBanID2
