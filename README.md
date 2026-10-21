@@ -16,5 +16,18 @@ Goal of this project is to containerize and deploy containerized dedicated game 
 ## Terraria-Vanilla
 [Abiotic Factor Dedicated Server](./Terraria-Vanilla/)
 
-## Terraria-Vanilla
-[Abiotic Factor Dedicated Server](./Terraria-Vanilla/) -->
+## Terraria-Tshock
+[Abiotic Factor Dedicated Server](./Terraria-Tshock/) -->
+
+# TODO
+- Port my terraria projects over
+- Project zomboid
+- Factorio
+- The mostly to see if I can list:
+    - GameSpy(Openspy/UniSpy)
+    - [newserv](https://github.com/fuzziqersoftware/newserv)
+    - Quake (1-3)
+    - Jedi Knight(JK & JA)
+    - Unreal Tournament (99 - 3)
+    - Call of Duty (1-4)
+    - Battlefield (1942 - 2)
