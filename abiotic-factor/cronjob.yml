@@ -1,0 +1,59 @@
+---
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: abiotic-factor-svc-account
+  namespace: abiotic-factor
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: abiotic-factor-role
+  namespace: abiotic-factor
+rules:
+  - apiGroups: ["apps", "extensions"]
+    resources: ["deployments"]
+    resourceNames: ["abiotic-factor"]
+    verbs: ["get", "patch", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: deployment-restart
+  namespace: abiotic-factor
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: abiotic-factor-role
+subjects:
+  - kind: ServiceAccount
+    name: abiotic-factor-svc-account
+    namespace: abiotic-factor
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: abiotic-factor-deployment-restart
+  namespace: abiotic-factor
+spec:
+  schedule: '0 4 * * *' # Restart server at 4am
+  timeZone: America/Denver
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      template:
+        spec:
+          serviceAccountName: abiotic-factor-svc-account
+          restartPolicy: Never
+          containers:
+            - name: abiotic-factor-restart
+              image: bitnami/kubectl
+              imagePullPolicy: IfNotPresent
+              command:
+                - 'kubectl'
+                - 'rollout'
+                - 'restart'
+                - 'deployment/abiotic-factor'

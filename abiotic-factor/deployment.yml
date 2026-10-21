@@ -1,0 +1,98 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: abiotic-factor
+  name: abiotic-factor
+  namespace: abiotic-factor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: abiotic-factor
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: abiotic-factor
+    spec:
+      nodeSelector:
+        requiredCPU: high
+      volumes:
+        - name: abiotic-factor-gamefiles-volume
+          persistentVolumeClaim:
+            claimName: abiotic-factor-gamefiles-pvc
+        - name: abiotic-factor-game-configs
+          configMap:
+            name: abiotic-factor-game-configs
+      initContainers:
+      - name: init-steamcmd
+        image: docker.io/steamcmd/steamcmd:ubuntu
+        imagePullPolicy: IfNotPresent
+        command: ['sh', '-c', 'steamcmd +@sSteamCmdForcePlatformType windows +force_install_dir /data +login anonymous +app_update 2857200 validate +quit']
+        securityContext:
+          allowPrivilegeEscalation: true
+        volumeMounts:
+        - name: abiotic-factor-gamefiles-volume
+          mountPath: /data
+      containers:
+      - name: abiotic-factor-server
+        image: docker.io/ubuntu:26.04
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            cpu: "3"
+            memory: "8Gi"
+          requests:
+            cpu: "1"
+            memory: "2Gi"
+        ports:
+        - containerPort: 7777
+          name: 7777-udp
+          protocol: UDP
+        - containerPort: 27015
+          name: 27015-udp
+          protocol: UDP
+        env:
+        - name: DEBIAN_FRONTEND
+          value: noninteractive
+        - name: SERVER_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: abiotic-factor-game-configs
+              key: servername
+        - name: PLAYER_COUNT
+          valueFrom:
+            configMapKeyRef:
+              name: abiotic-factor-game-configs
+              key: player_count
+        - name: JOIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: abiotic-factor-server-password
+              key: server_password
+        command:
+          - 'sh'
+          - '-c'
+          - |
+            apt-get update && \
+            apt-get -y upgrade && \
+            apt-get install -y --no-install-recommends \
+              wine
+            cd /data && \
+            wine /data/AbioticFactor/Binaries/Win64/AbioticFactorServer-Win64-Shipping.exe \
+              -SteamServerName="_DOLLAR_SERVER_NAME" \
+              -MaxServerPlayers=_DOLLAR_PLAYER_COUNT \
+              -WorldSaveName="_DOLLAR_SERVER_NAME" \
+              -PORT=7777 \
+              -QueryPort=27015 \
+              -ServerPassword=_DOLLAR_JOIN_PASSWORD \
+              -useperfthreads
+        volumeMounts:
+        - name: abiotic-factor-gamefiles-volume
+          mountPath: /data
+        - name: abiotic-factor-game-configs
+          mountPath: /data/AbioticFactor/Saved/SaveGames/Server/Admin.ini
+          subPath: Admin.ini
