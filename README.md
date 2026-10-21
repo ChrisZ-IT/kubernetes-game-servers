@@ -19,7 +19,7 @@ Goal of this project is to containerize and deploy containerized dedicated game 
 ## Terraria-Tshock
 [Abiotic Factor Dedicated Server](./Terraria-Tshock/) -->
 
-# TODO
+### TODO
 - Port my terraria projects over
 - Project zomboid
 - Factorio
