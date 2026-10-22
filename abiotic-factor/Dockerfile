@@ -1,4 +1,4 @@
-FROM debian:stable-slim
+FROM ubuntu:26.04
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN <<EOF
