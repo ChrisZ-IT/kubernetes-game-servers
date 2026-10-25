@@ -81,16 +81,14 @@ data:
     zip_name=(_DOLLAR_(echo _DOLLAR_{my_array[0]} | sed 's/^.//' | sed 's/"//g'))
     download_path=https://www.terraria.org/api/download/pc-dedicated-server
     echo "Downloading: _DOLLAR_{zip_name}"
-    mkdir /data/temp
-    curl -Lo /data/temp/terraria_server.zip _DOLLAR_download_path/_DOLLAR_zip_name
+    mkdir _DOLLAR_{HOME}/temp
+    curl -Lo _DOLLAR_{HOME}/temp/terraria_server.zip _DOLLAR_download_path/_DOLLAR_zip_name
 
     # extracts linux server files
-    mkdir /data/terraria-server
-    unzip /data/temp/terraria_server.zip /data/temp && \
-    cp -r /data/temp/*/Linux/* /data/terraria-server
-    chmod +x /data/terraria-server/TerrariaServer.bin.x86*
-    chown -R 1026:100 /data/terraria-server
-    rm -rf /data/temp
+    unzip _DOLLAR_{HOME}/temp/terraria_server.zip -d _DOLLAR_{HOME}/temp && \
+    cp -r _DOLLAR_{HOME}/temp/*/Linux/* /home/serviceuser/terraria-server
+    chmod 755 /home/serviceuser/terraria-server/TerrariaServer.bin.x86*
+    chown -R 1026:100 /home/serviceuser/terraria-server
 
   # tshock_download.sh: |
   #   #!/usr/bin/env bash
@@ -108,11 +106,11 @@ data:
   #     arch="arm"
   #   fi
   #   download_url=(_DOLLAR_(echo _DOLLAR_results | jq '.assets[].browser_download_url' | grep _DOLLAR_arch | tr -d '"' ))
-  #   mkdir /data/temp && \
-  #   curl -Lo /data/temp/tshock_server.zip _DOLLAR_download_url
+  #   mkdir _DOLLAR_{HOME}/temp && \
+  #   curl -Lo _DOLLAR_{HOME}/temp/tshock_server.zip _DOLLAR_download_url
 
   #   # extracts server files
-  #   mkdir /data/tshock-server && \
-  #   unzip /data/temp/tshock_server.zip -d /data/temp && \
-  #   tar -xvf /data/temp/*.tar -C /data/tshock-server && \
-  #   rm -rf /data/temp
+  #   mkdir _DOLLAR_{HOME}/tshock-server && \
+  #   unzip _DOLLAR_{HOME}/temp/tshock_server.zip -d _DOLLAR_{HOME}/temp && \
+  #   tar -xvf _DOLLAR_{HOME}/temp/*.tar -C _DOLLAR_{HOME}/tshock-server && \
+  #   rm -rf _DOLLAR_{HOME}/temp

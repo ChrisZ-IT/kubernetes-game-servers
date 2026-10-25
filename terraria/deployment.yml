@@ -21,8 +21,6 @@ spec:
       nodeSelector:
         requiredCPU: high
       securityContext:
-        runAsUser: 1026
-        runAsGroup: 100
         fsGroup: 100
         fsGroupChangePolicy: "OnRootMismatch"
       volumes:
@@ -40,18 +38,19 @@ spec:
       - name: init-downloader
         image: docker.io/chriszit/terraria-server-base:1.0.0
         imagePullPolicy: IfNotPresent
-        command: ['sh', '-c', 'download.sh']
+        command: ['sh', '-c', '/config/download.sh']
+        securityContext:
+          runAsUser: 0
         volumeMounts:
         - name: terraria-gamefiles-volume
-          mountPath: /data
+          mountPath: /home/serviceuser/terraria-server
         - name: terraria-game-configs
-          mountPath: /data/download.sh
-          subPath: download.sh
+          mountPath: /config/
       containers:
       - name: terraria-server
-        image: debian:stable-slim
+        image: docker.io/chriszit/terraria-server-base:1.0.0
         imagePullPolicy: IfNotPresent
-        workingDir: /data
+        workingDir: /home/serviceuser/terraria-server
         resources:
           limits:
             cpu: "3"
@@ -76,14 +75,17 @@ spec:
           - 'sh'
           - '-c'
           - |
-            /data/terraria-server/TerrariaServer.bin.x86 \
+            sleep 26000; /home/serviceuser/terraria-server/TerrariaServer.bin.x86_64 \
               -password _DOLLAR_JOIN_PASSWORD \
-              -config /data/terraria-server/serverconfig.txt
+              -config /config/serverconfig.txt
+        securityContext:
+          runAsUser: 0
+          # runAsUser: 1026
+          # runAsGroup: 100
         volumeMounts:
         - name: terraria-gamefiles-volume
-          mountPath: /data
+          mountPath: /home/serviceuser/terraria-server
         - name: terraria-saves-volume
           mountPath: /home/serviceuser/.local/share/Terraria
         - name: terraria-game-configs
-          mountPath: /data/terraria-server/serverconfig.txt
-          subPath: serverconfig.txt
+          mountPath: /config/
