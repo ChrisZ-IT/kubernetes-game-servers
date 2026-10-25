@@ -12,13 +12,13 @@ Goal of this project is to containerize and deploy containerized dedicated game 
 ### Abiotic Factor
 [Abiotic Factor Dedicated Server](./abiotic-factor/)
 
-
-## Terraria-Vanilla
-[Abiotic Factor Dedicated Server](./Terraria/)
+### Terraria-Vanilla
+[Terraria Dedicated Server](./Terraria/)
 
 <!--
-## Terraria-Tshock
+### Terraria-Tshock
 [Abiotic Factor Dedicated Server](./Terraria-Tshock/) -->
+
 
 ### TODO
 - Port my terraria projects over
