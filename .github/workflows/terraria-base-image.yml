@@ -1,4 +1,4 @@
-name: Build Base Server image
+name: Build Base Server image - Terraria(Vanilla)
 on:
   push:
     tags:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-terraria-base:
+  build:
     runs-on: ubuntu-latest
 
     steps:

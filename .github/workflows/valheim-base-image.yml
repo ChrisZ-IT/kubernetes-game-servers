@@ -1,4 +1,4 @@
-name: Build Base Server image
+name: Build Base Server image - Valheim
 on:
   push:
     tags:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-valheim-base:
+  build:
     runs-on: ubuntu-latest
 
     steps:
