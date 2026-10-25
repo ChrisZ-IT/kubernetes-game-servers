@@ -27,13 +27,18 @@ spec:
         - name: abiotic-factor-game-configs
           configMap:
             name: abiotic-factor-game-configs
+      securityContext:
+        fsGroup: 100
+        fsGroupChangePolicy: "OnRootMismatch"
       initContainers:
       - name: init-steamcmd
         image: docker.io/steamcmd/steamcmd:ubuntu
         imagePullPolicy: IfNotPresent
-        command: ['sh', '-c', 'steamcmd +@sSteamCmdForcePlatformType windows +force_install_dir /data +login anonymous +app_update 2857200 validate +quit && chown -R 1026:100 /data']
         securityContext:
-          allowPrivilegeEscalation: true
+          runAsUser: 0
+          runAsGroup: 0
+          runAsNonRoot: false
+        command: ['sh', '-c', 'steamcmd +@sSteamCmdForcePlatformType windows +force_install_dir /data +login anonymous +app_update 2857200 validate +quit && chown -R 1026:100 /data && chmod -R 775 /data']
         volumeMounts:
         - name: abiotic-factor-gamefiles-volume
           mountPath: /data
@@ -43,7 +48,7 @@ spec:
         imagePullPolicy: IfNotPresent
         securityContext:
           runAsUser: 1026
-          runAsGroup: 100
+          runAsGroup: 10
         resources:
           limits:
             cpu: "3"

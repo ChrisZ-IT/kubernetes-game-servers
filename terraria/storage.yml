@@ -1,0 +1,75 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nfs-storage
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: Immediate
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: terraria-gamefiles-pv
+  namespace: terraria
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs-storage
+  mountOptions:
+    - hard
+    - nfsvers=4.1
+    - _netdev
+  nfs:
+    path: /volume1/kubernetes_volumes/terraria/terraria_dedicated_server
+    server: 192.168.0.110
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: terraria-gamefiles-pvc
+  namespace: terraria
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: nfs-storage
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: terraria-saves-pv
+  namespace: terraria
+spec:
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs-storage
+  mountOptions:
+    - hard
+    - nfsvers=4.1
+    - _netdev
+  nfs:
+    path: /volume1/kubernetes_volumes/terraria/saves
+    server: 192.168.0.110
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: terraria-saves-pvc
+  namespace: terraria
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: nfs-storage
+  resources:
+    requests:
+      storage: 1Gi

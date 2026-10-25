@@ -13,7 +13,7 @@ Shoutout to DFJacob for his helpful [wiki](https://github.com/DFJacob/AbioticFac
           servername=${servername:-My Server}
           read -p "Enter Player count(6): " count
           count=${count:-6}
-          read -p "Enter Your STEAM ID: " steamid
+          read -p "Enter Your Steam ID(For Server Admin access): " steamid
           steamid=${steamid:-none}
           count=${count:-6}
           read -sp "Enter server password(none): " svr_password
@@ -47,7 +47,7 @@ Shoutout to DFJacob for his helpful [wiki](https://github.com/DFJacob/AbioticFac
     - `k logs -n abiotic-factor pods/abiotic-factor-66574f9b8c-tfj25 abiotic-factor-server`
   7. (optional) Add more server admins or setup your ban list by adding their SteamIDs to the Admin.ini block in the [configmap.yml](./configmap.yml)
 
-Note: To patch server just restart the pod. This is a little painful if you are restarting your pod over and over since this server is not linux native and requires wine, which has a ton of dependencies.
+Note: To patch server just restart the pod.
 
 ## Troubleshooting
   - Verify the pod:
@@ -69,8 +69,4 @@ Note: To patch server just restart the pod. This is a little painful if you are 
     - `k describe svc -n abiotic-factor abiotic-factor-svc`
 
 ## TO DO
-  - Get this working as a non root user :puke:
   - Setup network policies to lock things down even more
-  - Create base 'run' image that has wine baked in.
-    - This would speed up patching/deployment and is more the 'proper' way to deploy containers.
-    - Note on my apt install: From my limited testing (running around the starting area), I haven't seen any issues by only installing base wine while ignoring wine64 and all recommended packages. Installing all that would make this container over 2.5G. Just wish the devs would release a native linux server binary :(

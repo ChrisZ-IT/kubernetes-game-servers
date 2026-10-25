@@ -1,0 +1,59 @@
+---
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: terraria-svc-account
+  namespace: terraria
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: terraria-role
+  namespace: terraria
+rules:
+  - apiGroups: ["apps", "extensions"]
+    resources: ["deployments"]
+    resourceNames: ["terraria"]
+    verbs: ["get", "patch", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: deployment-restart
+  namespace: terraria
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: terraria-role
+subjects:
+  - kind: ServiceAccount
+    name: terraria-svc-account
+    namespace: terraria
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: terraria-deployment-restart
+  namespace: terraria
+spec:
+  schedule: '0 4 * * *' # Restart server at 4am
+  timeZone: America/Denver
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      template:
+        spec:
+          serviceAccountName: terraria-svc-account
+          restartPolicy: Never
+          containers:
+            - name: terraria-restart
+              image: bitnami/kubectl
+              imagePullPolicy: IfNotPresent
+              command:
+                - 'kubectl'
+                - 'rollout'
+                - 'restart'
+                - 'deployment/terraria'
