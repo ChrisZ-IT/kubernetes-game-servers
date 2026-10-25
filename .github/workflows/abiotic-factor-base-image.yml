@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-abiotic-factor-base:
     runs-on: ubuntu-latest
 
     steps:
