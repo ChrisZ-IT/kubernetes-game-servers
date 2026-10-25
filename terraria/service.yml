@@ -1,0 +1,20 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: terraria-svc
+  namespace: terraria
+spec:
+  type: LoadBalancer
+  selector:
+    app: terraria
+  externalTrafficPolicy: Local
+  ports:
+  - name: ${PORT}-tcp
+    port: ${PORT}
+    protocol: TCP
+    targetPort: ${PORT}
+  - name: ${PORT}-udp
+    port: ${PORT}
+    protocol: UDP
+    targetPort: ${PORT}

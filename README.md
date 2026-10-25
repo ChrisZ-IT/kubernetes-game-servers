@@ -12,10 +12,11 @@ Goal of this project is to containerize and deploy containerized dedicated game 
 ### Abiotic Factor
 [Abiotic Factor Dedicated Server](./abiotic-factor/)
 
-<!--
-## Terraria-Vanilla
-[Abiotic Factor Dedicated Server](./Terraria-Vanilla/)
 
+## Terraria-Vanilla
+[Abiotic Factor Dedicated Server](./Terraria/)
+
+<!--
 ## Terraria-Tshock
 [Abiotic Factor Dedicated Server](./Terraria-Tshock/) -->
 
@@ -23,6 +24,7 @@ Goal of this project is to containerize and deploy containerized dedicated game 
 - Port my terraria projects over
 - Project zomboid
 - Factorio
+- Don't starve together
 - The mostly to see if I can list:
     - GameSpy(Openspy/UniSpy)
     - [newserv](https://github.com/fuzziqersoftware/newserv)
