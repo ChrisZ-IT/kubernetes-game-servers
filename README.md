@@ -3,21 +3,21 @@ Goal of this project is to containerize and deploy containerized dedicated game 
 
 ## Deployments
 
-### Satisfactory
-[Satisfactory Dedicated Server](./satisfactory/)
-
-### Valheim
-[Valheim Dedicated Server](./valheim/)
-
 ### Abiotic Factor
-[Abiotic Factor Dedicated Server](./abiotic-factor/)
+[Abiotic Factor Dedicated Server](https://github.com/ChrisZ-IT/abiotic-factor-k8s-deployment)
 
-### Terraria-Vanilla
-[Terraria Dedicated Server](./Terraria/)
+### Satisfactory
+[Satisfactory Dedicated Server](https://github.com/ChrisZ-IT/satisfactory-k8s-deployment)
 
 <!--
 ### Terraria-Tshock
 [Abiotic Factor Dedicated Server](./Terraria-Tshock/) -->
+
+### Terraria-Vanilla
+[Terraria Dedicated Server](https://github.com/ChrisZ-IT/terraria-k8s-deployment)
+
+### Valheim
+[Valheim Dedicated Server](https://github.com/ChrisZ-IT/valheim-k8s-deployment)
 
 
 ### TODO
