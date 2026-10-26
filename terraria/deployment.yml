@@ -21,8 +21,9 @@ spec:
       nodeSelector:
         requiredCPU: high
       securityContext:
+        runAsUser: 1026
+        runAsGroup: 100
         fsGroup: 100
-        fsGroupChangePolicy: "OnRootMismatch"
       volumes:
         - name: terraria-gamefiles-volume
           persistentVolumeClaim:
@@ -37,10 +38,8 @@ spec:
       initContainers:
       - name: init-downloader
         image: docker.io/chriszit/terraria-server-base:1.0.0
-        imagePullPolicy: IfNotPresent
-        command: ['sh', '-c', '/config/download.sh']
-        securityContext:
-          runAsUser: 0
+        imagePullPolicy: Always
+        command: ['sh', '-c', 'rm -rf /home/serviceuser/terraria-server/*; /config/download.sh']
         volumeMounts:
         - name: terraria-gamefiles-volume
           mountPath: /home/serviceuser/terraria-server
@@ -48,7 +47,7 @@ spec:
           mountPath: /config/
       containers:
       - name: terraria-server
-        image: docker.io/chriszit/terraria-server-base:1.0.0
+        image: debian:stable-slim
         imagePullPolicy: IfNotPresent
         workingDir: /home/serviceuser/terraria-server
         resources:
@@ -75,17 +74,14 @@ spec:
           - 'sh'
           - '-c'
           - |
-            sleep 26000; /home/serviceuser/terraria-server/TerrariaServer.bin.x86_64 \
+            /home/serviceuser/terraria-server/TerrariaServer.bin.x86_64 \
               -password _DOLLAR_JOIN_PASSWORD \
               -config /config/serverconfig.txt
-        securityContext:
-          runAsUser: 0
-          # runAsUser: 1026
-          # runAsGroup: 100
         volumeMounts:
         - name: terraria-gamefiles-volume
           mountPath: /home/serviceuser/terraria-server
         - name: terraria-saves-volume
           mountPath: /home/serviceuser/.local/share/Terraria
         - name: terraria-game-configs
-          mountPath: /config/
+          mountPath: /config/serverconfig.txt
+          subPath: serverconfig.txt
