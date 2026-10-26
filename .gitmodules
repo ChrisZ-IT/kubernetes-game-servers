@@ -2,17 +2,14 @@
 	path = abiotic-factor
 	url = https://github.com/ChrisZ-IT/abiotic-factor-k8s-deployment.git
 	branch = main
-
 [submodule "satisfactory"]
 	path = satisfactory
 	url = https://github.com/ChrisZ-IT/satisfactory-k8s-deployment.git
 	branch = main
-
 [submodule "terraria"]
 	path = terraria
 	url = https://github.com/ChrisZ-IT/terraria-k8s-deployment.git
 	branch = main
-
 [submodule "valheim"]
 	path = valheim
 	url = https://github.com/ChrisZ-IT/valheim-k8s-deployment.git
