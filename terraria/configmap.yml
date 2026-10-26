@@ -86,9 +86,8 @@ data:
 
     # extracts linux server files
     unzip _DOLLAR_{HOME}/temp/terraria_server.zip -d _DOLLAR_{HOME}/temp && \
-    cp -r _DOLLAR_{HOME}/temp/*/Linux/* /home/serviceuser/terraria-server
-    chmod 755 /home/serviceuser/terraria-server/TerrariaServer.bin.x86*
-    chown -R 1026:100 /home/serviceuser/terraria-server
+    cp -r _DOLLAR_{HOME}/temp/*/Linux/* _DOLLAR_{HOME}/terraria-server
+    chmod 755 _DOLLAR_{HOME}/terraria-server/TerrariaServer.bin.x86*
 
   # tshock_download.sh: |
   #   #!/usr/bin/env bash

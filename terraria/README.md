@@ -3,7 +3,7 @@
 ## deployment
 
   1. Clone this project down and CD into that directory
-  3. Make any necessary changes (examples: change configmap, pv and pvcs..etc)
+  3. Make any necessary changes (examples: change configmap(Other server settings), pv and pvcs..etc)
   4. Deploy the server resources(This assumes you have `envsubst` installed):
       - Run `./deploy.sh` within the terraria directory within this project.
   5. Verify pod starts:
@@ -26,6 +26,10 @@ Note: To patch server just restart the pod.
   - Verify storage is bound:
     - `k get pv -n terraria`
     - `k get pvc -n terraria`
+
+  - Verify storage permissions:
+    - If pod wont start or you are getting `permission denied` errors and you are using nfs as your persistent storage.
+      - validate 1026:100 has permissions to your nfs mounts. You may have to exec into the pod or set it from the storage side.
 
   - Verify the service has an endpoint
     - `k describe svc -n terraria terraria-svc`
